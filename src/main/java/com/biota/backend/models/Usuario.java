@@ -15,15 +15,13 @@ public class Usuario {
     private String nombre;
     private String email;
     private String password;
-
     private String rol;
-
     private String finca;
     private String municipio;
-
     private String vereda;
     private String productos;
     private String etapa;
 
+    public Usuario() {
+    }
 }
-

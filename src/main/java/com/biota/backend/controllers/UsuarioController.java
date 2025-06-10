@@ -55,4 +55,39 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
         }
     }
+    // Obtener un usuario por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> getUserById(@PathVariable Long id) {
+        return usuarioRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Actualizar un usuario
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> updateUser(@PathVariable Long id, @RequestBody Usuario datosActualizados) {
+        return usuarioRepository.findById(id).map(usuario -> {
+            usuario.setNombre(datosActualizados.getNombre());
+            usuario.setEmail(datosActualizados.getEmail());
+            usuario.setPassword(datosActualizados.getPassword());
+            usuario.setRol(datosActualizados.getRol());
+            usuario.setFinca(datosActualizados.getFinca());
+            usuario.setMunicipio(datosActualizados.getMunicipio());
+            usuario.setVereda(datosActualizados.getVereda());
+            usuario.setProductos(datosActualizados.getProductos());
+            usuario.setEtapa(datosActualizados.getEtapa());
+            usuarioRepository.save(usuario);
+            return ResponseEntity.ok(usuario);
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    // Eliminar un usuario
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        return usuarioRepository.findById(id).map(usuario -> {
+            usuarioRepository.delete(usuario);
+            return ResponseEntity.ok().build();
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
 }
